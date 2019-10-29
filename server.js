@@ -11,11 +11,14 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.send('Hello World'))
 
+//membuat request post
+//nama request first name , lastname
 app.post('/hello', function (req, res) {
     const respon = {
         ststusCode: 200,
         error: "",
-        message: "Hello Json"
+        message: "Hello Json",
+        content: req.body
     }
     res.json(respon);
 })
