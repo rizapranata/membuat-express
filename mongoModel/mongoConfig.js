@@ -1,5 +1,5 @@
 //memanggil library mongoose
-const Mongo = require("mongoose"); 
+const Mongoose = require("mongoose"); 
 //mengoneksikan ke dbm mongo
 Mongoose.connect('mongodb://localhost/belajarmongo')
 //export module mongoose
