@@ -1,34 +1,50 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 4000
+//memanggil libary body parser
+const bodyParser = require('body-parser');
+//config body parser
+app.use(bodyParser.urlencoded({ extended: true })); //menangkap type request dalam bentuk form urlencoded
 
-//memanggil library body parser
-const bodyParser = require("body-parser");
-//confog body parser
-app.use(bodyParser.urlencoded({ extended: true })); //menangkap type request dalam bentuk form urllencode
-//menangkap url dalam bentuk json
-app.use(bodyParser.json());
+app.use(bodyParser.json());//menangkap url dalam bentuk json
 
 const Mongoose = require('./mongoModel/mongoConfig')
-// const PersonModel = Mongoose.model("person",{
-//     firstname : String,
-//     lastname: String
-// });
-//commit -m "memanggil Mongoconfig dan membuat model PersonalModel sebagai
-//penampung colection person"
+const PersonModel = Mongoose.model("person", {
+    firstname: String,//field firstname
+    lastname: String // field lastname
+}) // cmt -m memanggil MongoConfig dan Membuat Model PersonModel sebagai penampung collection person
 
-app.get('/', (req, res) => res.send('Hello World'))
+app.post('/Profile/create', async (req, res) => {
+    //do something here
+    console.log(req.body)
+    const insert = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname
+    }
+    var person = new PersonModel(insert);
+    var result = await person.save();
+    const respon = {
+        statusCode: 200,
+        error: "",
+        message: "Create Person",
+        content: result
+    }
+    res.json(respon);
+
+})//create person
+app.get('/', (req, res) => res.send('Hello word-'))
 
 //membuat request post
-//nama request first name , lastname
+//nama request firstname dan lastname
 app.post('/hello', function (req, res) {
     const respon = {
-        ststusCode: 200,
+        statusCode: 200,
         error: "",
-        message: "Hello Json",
+        message: 'Hello Json',
         content: req.body
     }
     res.json(respon);
 })
+//commit lagi dengan nama "membuat requst post"
+app.listen(port, () => console.log(`Example app listening on port $(port)!`))
 
-app.listen(port, () => console.log(`Express app listening on port ${port}!`))
